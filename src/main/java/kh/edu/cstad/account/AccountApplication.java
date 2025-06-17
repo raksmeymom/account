@@ -1,35 +1,35 @@
-// AccountApplication.java
 package kh.edu.cstad.account;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
-
 @SpringBootApplication
 public class AccountApplication implements CommandLineRunner {
 
-	private final AnnotionConfig config;
-	private final Student student;
+	private final AnnotationConfig config;
+	private final AnnotationConfig config2;
 
-	@Autowired
-	private List<Student> students;
+	private Student student;
+	private Student student2;
 
-//	private final List<Student> students;
-
-	@Autowired
-	public void SomeService(List<Student> students) {
-		this.students = students;
+	public AccountApplication(AnnotationConfig config, AnnotationConfig config2) {
+		this.config = config;
+		this.config2 = config2;
 	}
 
-
-	// Constructor Injection for required beans
 	@Autowired
-	public AccountApplication(AnnotionConfig config, Student student) {
-		this.config = config;
+	@Qualifier("s1")
+	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	@Autowired
+	@Qualifier("s2")
+	public void setStudent2(Student student2) {
+		this.student2 = student2;
 	}
 
 	public static void main(String[] args) {
@@ -38,12 +38,7 @@ public class AccountApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		System.out.println(" Running Application...");
-
-		System.out.println(" [From AnnotionConfig]");
-		config.printStudent();
-
-		System.out.println(" [Injected Student in Bean]");
 		System.out.println(student);
+		System.out.println(student2);
 	}
 }
